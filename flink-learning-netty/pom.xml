@@ -13,6 +13,7 @@
     <name>flink-learning-netty</name>
     <modules>
         <module>flink-learning-netty-demo01</module>
+        <module>flink-learning-netty-demo02</module>
     </modules>
 
     <properties>
