@@ -20,7 +20,7 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         String message = "你好，我是客户端"; // 客户端向服务端发送的初始消息
-        ByteBuf byteBuf = NettyUtils.convertString2ByteBuf(message, ctx); // 将字符串消息转换为 ByteBuf
+        ByteBuf byteBuf = NettyUtils.INSTANCE.convertString2ByteBuf(message, ctx); // 将字符串消息转换为 ByteBuf
         ctx.channel().writeAndFlush(byteBuf); // 将消息写入通道并刷新
     }
 

@@ -24,7 +24,7 @@ public class FirstServerHandler extends ChannelInboundHandlerAdapter {
 
         // 服务端向客户端发送响应消息
         String message = "你好，我是服务端";
-        ByteBuf out = NettyUtils.convertString2ByteBuf(message, ctx); // 将字符串消息转换为 ByteBuf
+        ByteBuf out = NettyUtils.INSTANCE.convertString2ByteBuf(message, ctx); // 将字符串消息转换为 ByteBuf
         ctx.channel().writeAndFlush(out); // 将响应消息写入通道并刷新
     }
 }
