@@ -4,6 +4,8 @@ import cn.liboshuai.flink.netty.demo04.protocol.Packet;
 import cn.liboshuai.flink.netty.demo04.protocol.PacketCodeC;
 import cn.liboshuai.flink.netty.demo04.protocol.request.LoginRequestPacket;
 import cn.liboshuai.flink.netty.demo04.protocol.response.LoginResponsePacket;
+import cn.liboshuai.flink.netty.demo04.protocol.response.MessageResponsePacket;
+import cn.liboshuai.flink.netty.demo04.util.LoginUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -41,9 +43,13 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             log.info("接收到的服务端登录响应：{}", loginResponsePacket); // 打印接收到的响应内容
             if (loginResponsePacket.isSuccess()) {
                 log.info("登录成功！"); // 登录成功日志
+                LoginUtil.markLogin(ctx.channel()); // 标记登录成功
             } else {
                 log.info("登录失败！原因：{}", loginResponsePacket.getReason()); // 登录失败日志
             }
+        } else if (packet instanceof MessageResponsePacket) {
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            log.info("接收到的服务端消息数据：{}", messageResponsePacket);
         } else {
             log.info("其他类型的数据请求暂不支持！"); // 如果不是登录响应包，则打印不支持的信息
         }

@@ -2,7 +2,9 @@ package cn.liboshuai.flink.netty.demo04.protocol;
 
 import cn.liboshuai.flink.netty.demo04.protocol.command.Command;
 import cn.liboshuai.flink.netty.demo04.protocol.request.LoginRequestPacket;
+import cn.liboshuai.flink.netty.demo04.protocol.request.MessageRequestPacket;
 import cn.liboshuai.flink.netty.demo04.protocol.response.LoginResponsePacket;
+import cn.liboshuai.flink.netty.demo04.protocol.response.MessageResponsePacket;
 import cn.liboshuai.flink.netty.demo04.serialize.Serializer;
 import cn.liboshuai.flink.netty.demo04.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -34,6 +36,8 @@ public class PacketCodeC {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         // 初始化序列化器映射表
         serializerMap = new HashMap<>();

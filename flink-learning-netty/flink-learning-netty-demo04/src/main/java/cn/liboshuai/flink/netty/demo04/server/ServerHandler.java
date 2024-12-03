@@ -3,7 +3,9 @@ package cn.liboshuai.flink.netty.demo04.server;
 import cn.liboshuai.flink.netty.demo04.protocol.Packet;
 import cn.liboshuai.flink.netty.demo04.protocol.PacketCodeC;
 import cn.liboshuai.flink.netty.demo04.protocol.request.LoginRequestPacket;
+import cn.liboshuai.flink.netty.demo04.protocol.request.MessageRequestPacket;
 import cn.liboshuai.flink.netty.demo04.protocol.response.LoginResponsePacket;
+import cn.liboshuai.flink.netty.demo04.protocol.response.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -39,6 +41,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
             // 编码响应包并发送给客户端
             ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), loginResponsePacket);
+            ctx.channel().writeAndFlush(responseByteBuf);
+        } else if (packet instanceof MessageRequestPacket) {
+            MessageRequestPacket messageRequestPacket = (MessageRequestPacket) packet;
+            log.info("接收到的客户端消息数据：{}", messageRequestPacket);
+            String responseMessage = String.format("服务端 [%s]", messageRequestPacket.getMessage());
+            log.info("响应给客户端消息数据：{}", responseMessage);
+            MessageResponsePacket messageResponsePacket = MessageResponsePacket.builder()
+                    .message(responseMessage)
+                    .build();
+            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), messageResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
         } else {
             // 暂不支持其他类型的数据请求

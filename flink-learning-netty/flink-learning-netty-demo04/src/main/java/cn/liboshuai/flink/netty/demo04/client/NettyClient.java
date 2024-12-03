@@ -1,6 +1,12 @@
 package cn.liboshuai.flink.netty.demo04.client;
 
+import cn.liboshuai.flink.netty.demo04.protocol.PacketCodeC;
+import cn.liboshuai.flink.netty.demo04.protocol.request.MessageRequestPacket;
+import cn.liboshuai.flink.netty.demo04.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -8,6 +14,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,6 +56,9 @@ public class NettyClient {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 log.info("连接至 [{}:{}] 成功！", host, port); // 连接成功日志
+                Channel channel = ((ChannelFuture) future).channel();
+                // 启动控制台线程监听键盘输入
+                startConsoleThread(channel);
             } else if (retry == 0) {
                 log.info("连接至 [{}:{}] 失败！重试次数已用完，放弃连接！", host, port); // 如果没有重试次数了，直接放弃连接
             } else {
@@ -61,5 +71,23 @@ public class NettyClient {
                 );
             }
         });
+    }
+
+    /**
+     * 启动控制台线程监听键盘输入
+     */
+    private static void startConsoleThread(Channel channel) {
+        new Thread(() -> {
+            while (!Thread.interrupted()) {
+                if (LoginUtil.hasLogin(channel)) {
+                    log.info("请输入发送内容: ");
+                    String line = new Scanner(System.in).nextLine();
+
+                    MessageRequestPacket messageRequestPacket = MessageRequestPacket.builder().message(line).build();
+                    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(channel.alloc(), messageRequestPacket);
+                    channel.writeAndFlush(byteBuf);
+                }
+            }
+        }).start();
     }
 }

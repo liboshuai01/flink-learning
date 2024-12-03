@@ -16,6 +16,7 @@
         <module>flink-learning-netty-demo02</module>
         <module>flink-learning-netty-demo03</module>
         <module>flink-learning-netty-demo04</module>
+        <module>flink-learning-netty-demo05</module>
     </modules>
 
     <properties>
