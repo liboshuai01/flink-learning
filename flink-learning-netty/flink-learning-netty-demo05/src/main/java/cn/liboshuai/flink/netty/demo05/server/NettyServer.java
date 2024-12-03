@@ -1,5 +1,6 @@
 package cn.liboshuai.flink.netty.demo05.server;
 
+import cn.liboshuai.flink.netty.demo05.codec.Delimiter;
 import cn.liboshuai.flink.netty.demo05.codec.PacketDecoder;
 import cn.liboshuai.flink.netty.demo05.codec.PacketEncoder;
 import cn.liboshuai.flink.netty.demo05.server.handler.LoginRequestHandler;
@@ -38,6 +39,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() { // 初始化每一个客户端连接的处理器
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
+                        nioSocketChannel.pipeline().addLast(new Delimiter()); // 添加自定义的 Delimiter
                         nioSocketChannel.pipeline().addLast(new PacketDecoder()); // 添加自定义的 PacketDecoder
                         nioSocketChannel.pipeline().addLast(new LoginRequestHandler()); // 添加自定义的 LoginRequestHandler
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler()); // 添加自定义的 MessageRequestHandler

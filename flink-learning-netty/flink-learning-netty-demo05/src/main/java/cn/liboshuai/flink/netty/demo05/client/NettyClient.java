@@ -2,6 +2,7 @@ package cn.liboshuai.flink.netty.demo05.client;
 
 import cn.liboshuai.flink.netty.demo05.client.handler.LoginResponseHandler;
 import cn.liboshuai.flink.netty.demo05.client.handler.MessageResponseHandler;
+import cn.liboshuai.flink.netty.demo05.codec.Delimiter;
 import cn.liboshuai.flink.netty.demo05.codec.PacketDecoder;
 import cn.liboshuai.flink.netty.demo05.codec.PacketEncoder;
 import cn.liboshuai.flink.netty.demo05.protocol.request.MessageRequestPacket;
@@ -45,6 +46,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() { // 配置初始化处理器
                     @Override
                     protected void initChannel(SocketChannel socketChannel) {
+                        socketChannel.pipeline().addLast(new Delimiter()); // 添加自定义的 Delimiter
                         socketChannel.pipeline().addLast(new PacketDecoder()); // 添加自定义的 PacketDecoder
                         socketChannel.pipeline().addLast(new LoginResponseHandler()); // 添加自定义的 LoginResponseHandler
                         socketChannel.pipeline().addLast(new MessageResponseHandler()); // 添加自定义的 MessageResponseHandler

@@ -22,7 +22,7 @@ public class PacketCodeC {
     public static final PacketCodeC INSTANCE = new PacketCodeC();
 
     // 魔数，用于识别是否是合法的数据包
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
 
     // Command 对应的 Packet 类型映射表
     private static final Map<Byte, Class<? extends Packet>> packetTypeMap;
