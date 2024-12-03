@@ -7,13 +7,20 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>flink-learning-netty-demo3</artifactId>
+    <artifactId>flink-learning-netty-demo04</artifactId>
     <packaging>jar</packaging>
 
-    <name>flink-learning-netty-demo3</name>
+    <name>flink-learning-netty-demo04</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

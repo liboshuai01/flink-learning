@@ -16,6 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <lombok.version>1.18.22</lombok.version>
+    <fastjson.version>1.2.29</fastjson.version>
     <log4j.version>2.16.0</log4j.version>
     <slf4j.version>1.7.25</slf4j.version>
     <netty.version>4.1.6.Final</netty.version>
@@ -32,6 +33,11 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
       </dependency>
 
       <!-- =============== log ============== -->

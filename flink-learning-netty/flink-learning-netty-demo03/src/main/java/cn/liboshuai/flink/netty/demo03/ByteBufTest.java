@@ -1,4 +1,4 @@
-package cn.liboshuai.flink.netty.demo3;
+package cn.liboshuai.flink.netty.demo03;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
