@@ -2,6 +2,7 @@ package cn.liboshuai.flink.netty.demo05.server.handler;
 
 import cn.liboshuai.flink.netty.demo05.protocol.request.LoginRequestPacket;
 import cn.liboshuai.flink.netty.demo05.protocol.response.LoginResponsePacket;
+import cn.liboshuai.flink.netty.demo05.util.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 模拟校验登录逻辑
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true); // 登录成功
+            LoginUtil.markLogin(channelHandlerContext.channel()); // 记录登录状态
         } else {
             loginResponsePacket.setSuccess(false); // 登录失败，并设置失败原因
             loginResponsePacket.setReason("账号密码验证失败！");

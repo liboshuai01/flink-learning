@@ -3,6 +3,7 @@ package cn.liboshuai.flink.netty.demo05.server;
 import cn.liboshuai.flink.netty.demo05.codec.Delimiter;
 import cn.liboshuai.flink.netty.demo05.codec.PacketDecoder;
 import cn.liboshuai.flink.netty.demo05.codec.PacketEncoder;
+import cn.liboshuai.flink.netty.demo05.server.handler.AuthHandler;
 import cn.liboshuai.flink.netty.demo05.server.handler.LoginRequestHandler;
 import cn.liboshuai.flink.netty.demo05.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -42,6 +43,7 @@ public class NettyServer {
                         nioSocketChannel.pipeline().addLast(new Delimiter()); // 添加自定义的 Delimiter
                         nioSocketChannel.pipeline().addLast(new PacketDecoder()); // 添加自定义的 PacketDecoder
                         nioSocketChannel.pipeline().addLast(new LoginRequestHandler()); // 添加自定义的 LoginRequestHandler
+                        nioSocketChannel.pipeline().addLast(new AuthHandler()); // 添加自定义的 AuthHandler
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler()); // 添加自定义的 MessageRequestHandler
                         nioSocketChannel.pipeline().addLast(new PacketEncoder()); // 添加自定义的 PacketEncoder
                     }
