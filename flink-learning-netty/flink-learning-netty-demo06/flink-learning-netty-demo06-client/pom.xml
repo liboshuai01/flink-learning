@@ -3,17 +3,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.liboshuai.flink</groupId>
-        <artifactId>flink-learning-netty</artifactId>
+        <artifactId>flink-learning-netty-demo06</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>flink-learning-netty-demo03</artifactId>
+    <artifactId>flink-learning-netty-demo06-client</artifactId>
     <packaging>jar</packaging>
 
-    <name>flink-learning-netty-demo03</name>
+    <name>flink-learning-netty-demo06-client</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.liboshuai.flink</groupId>
+            <artifactId>flink-learning-netty-demo06-common</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 </project>

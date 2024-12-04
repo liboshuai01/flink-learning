@@ -8,9 +8,14 @@
     </parent>
 
     <artifactId>flink-learning-netty-demo06</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>flink-learning-netty-demo06</name>
+    <modules>
+        <module>flink-learning-netty-demo06-client</module>
+        <module>flink-learning-netty-demo06-server</module>
+        <module>flink-learning-netty-demo06-common</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
