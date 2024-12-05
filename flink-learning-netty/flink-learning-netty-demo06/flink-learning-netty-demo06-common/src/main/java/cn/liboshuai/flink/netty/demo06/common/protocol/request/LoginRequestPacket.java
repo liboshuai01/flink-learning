@@ -18,9 +18,14 @@ public class LoginRequestPacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String userId; // 用户 ID
-    private String username; // 用户名
-    private String password; // 密码
+    /**
+     * 用户名
+     */
+    private String username;
+    /**
+     * 密码
+     */
+    private String password;
 
     @Override
     public Byte getCommand() {

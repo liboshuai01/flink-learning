@@ -1,4 +1,4 @@
-package cn.liboshuai.flink.netty.demo06.server.session;
+package cn.liboshuai.flink.netty.demo06.common.session;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,13 +15,10 @@ public class Session implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户Id
-     */
-    private String userId;
-
-    /**
      * 用户名称
      */
     private String username;
+
+    // 其他用户信息字段省略
 
 }

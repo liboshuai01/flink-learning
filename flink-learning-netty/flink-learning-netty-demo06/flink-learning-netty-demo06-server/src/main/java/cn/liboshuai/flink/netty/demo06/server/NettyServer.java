@@ -1,11 +1,12 @@
-package cn.liboshuai.flink.netty.demo06.server.server;
+package cn.liboshuai.flink.netty.demo06.server;
 
 import cn.liboshuai.flink.netty.demo06.common.codec.Delimiter;
-import cn.liboshuai.flink.netty.demo06.common.codec.PacketDecoder;
-import cn.liboshuai.flink.netty.demo06.common.codec.PacketEncoder;
-import cn.liboshuai.flink.netty.demo06.server.server.handler.AuthHandler;
-import cn.liboshuai.flink.netty.demo06.server.server.handler.LoginRequestHandler;
-import cn.liboshuai.flink.netty.demo06.server.server.handler.MessageRequestHandler;
+import cn.liboshuai.flink.netty.demo06.common.codec.PacketCodecHandler;
+import cn.liboshuai.flink.netty.demo06.common.handler.IMIdleStateHandler;
+import cn.liboshuai.flink.netty.demo06.server.handler.AuthHandler;
+import cn.liboshuai.flink.netty.demo06.server.handler.HeartbeatRequestHandler;
+import cn.liboshuai.flink.netty.demo06.server.handler.IMHandler;
+import cn.liboshuai.flink.netty.demo06.server.handler.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -40,12 +41,13 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() { // 初始化每一个客户端连接的处理器
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                        nioSocketChannel.pipeline().addLast(new Delimiter()); // 添加自定义的 Delimiter
-                        nioSocketChannel.pipeline().addLast(new PacketDecoder()); // 添加自定义的 PacketDecoder
-                        nioSocketChannel.pipeline().addLast(new LoginRequestHandler()); // 添加自定义的 LoginRequestHandler
-                        nioSocketChannel.pipeline().addLast(new AuthHandler()); // 添加自定义的 AuthHandler
-                        nioSocketChannel.pipeline().addLast(new MessageRequestHandler()); // 添加自定义的 MessageRequestHandler
-                        nioSocketChannel.pipeline().addLast(new PacketEncoder()); // 添加自定义的 PacketEncoder
+                        nioSocketChannel.pipeline().addLast(new IMIdleStateHandler()); // 心跳
+                        nioSocketChannel.pipeline().addLast(new Delimiter()); // 解决半包粘包
+                        nioSocketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE); // 编码解码
+                        nioSocketChannel.pipeline().addLast(HeartbeatRequestHandler.INSTANCE); // 处理心跳请求
+                        nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE); // 处理登录请求
+                        nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE); // 认证拦截
+                        nioSocketChannel.pipeline().addLast(IMHandler.INSTANCE); // 处理IM请求
                     }
                 });
 

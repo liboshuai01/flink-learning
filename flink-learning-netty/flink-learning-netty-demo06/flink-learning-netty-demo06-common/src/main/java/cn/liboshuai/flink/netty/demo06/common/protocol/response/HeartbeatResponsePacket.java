@@ -2,29 +2,23 @@ package cn.liboshuai.flink.netty.demo06.common.protocol.response;
 
 import cn.liboshuai.flink.netty.demo06.common.protocol.Packet;
 import cn.liboshuai.flink.netty.demo06.common.protocol.command.Command;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * 登录响应包，继承自 Packet，定义登录响应结果
- */
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LoginResponsePacket extends Packet implements Serializable {
+public class HeartbeatResponsePacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String username; // 用户名称
-    private boolean success; // 登录是否成功
-    private String reason; // 失败原因
-
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_RESPONSE; // 返回登录响应指令
+        return Command.HEARTBEAT_RESPONSE;
     }
 }
-

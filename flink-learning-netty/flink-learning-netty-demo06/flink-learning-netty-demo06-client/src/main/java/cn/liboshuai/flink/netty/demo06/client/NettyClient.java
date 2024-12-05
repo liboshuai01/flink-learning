@@ -1,13 +1,13 @@
-package cn.liboshuai.flink.netty.demo06.client.client;
+package cn.liboshuai.flink.netty.demo06.client;
 
-import cn.liboshuai.flink.netty.demo06.client.client.handler.LoginResponseHandler;
-import cn.liboshuai.flink.netty.demo06.client.client.handler.MessageResponseHandler;
+import cn.liboshuai.flink.netty.demo06.client.console.ConsoleCommandManager;
+import cn.liboshuai.flink.netty.demo06.client.console.LoginConsoleCommand;
+import cn.liboshuai.flink.netty.demo06.client.handler.HeartBeatTimerHandler;
+import cn.liboshuai.flink.netty.demo06.client.handler.IMResponseHandler;
 import cn.liboshuai.flink.netty.demo06.client.util.LoginUtil;
 import cn.liboshuai.flink.netty.demo06.common.codec.Delimiter;
-import cn.liboshuai.flink.netty.demo06.common.codec.PacketDecoder;
-import cn.liboshuai.flink.netty.demo06.common.codec.PacketEncoder;
-import cn.liboshuai.flink.netty.demo06.common.protocol.request.LoginRequestPacket;
-import cn.liboshuai.flink.netty.demo06.common.protocol.request.MessageRequestPacket;
+import cn.liboshuai.flink.netty.demo06.common.codec.PacketCodecHandler;
+import cn.liboshuai.flink.netty.demo06.common.handler.IMIdleStateHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -43,15 +43,15 @@ public class NettyClient {
                 .channel(NioSocketChannel.class) // 指定客户端的通道类型
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000) // 设置连接超时时间
                 .option(ChannelOption.SO_KEEPALIVE, true) // 保持长连接
-                .option(ChannelOption.TCP_NODELAY, true) // 禁用 Nagle 算法
+                .option(ChannelOption.TCP_NODELAY, true) // { 禁用 Nagle 算法
                 .handler(new ChannelInitializer<SocketChannel>() { // 配置初始化处理器
                     @Override
                     protected void initChannel(SocketChannel socketChannel) {
-                        socketChannel.pipeline().addLast(new Delimiter()); // 添加自定义的 Delimiter
-                        socketChannel.pipeline().addLast(new PacketDecoder()); // 添加自定义的 PacketDecoder
-                        socketChannel.pipeline().addLast(new LoginResponseHandler()); // 添加自定义的 LoginResponseHandler
-                        socketChannel.pipeline().addLast(new MessageResponseHandler()); // 添加自定义的 MessageResponseHandler
-                        socketChannel.pipeline().addLast(new PacketEncoder()); // 添加自定义的 PacketEncoder
+                        socketChannel.pipeline().addLast(new IMIdleStateHandler()); // 空闲检测
+                        socketChannel.pipeline().addLast(new Delimiter()); // 解决半包沾包
+                        socketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE); // 编码解码
+                        socketChannel.pipeline().addLast(HeartBeatTimerHandler.INSTANCE); // 心跳请求
+                        socketChannel.pipeline().addLast(IMResponseHandler.INSTANCE); // 处理IM指令
                     }
                 });
 
@@ -87,31 +87,15 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
+            ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+            LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
             while (!Thread.interrupted()) {
                 if (!LoginUtil.hasLogin(channel)) {
-                    log.info("登录用户名: ");
-                    String username = scanner.nextLine();
-                    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-                    loginRequestPacket.setUsername(username);
-                    loginRequestPacket.setPassword("123456");
-                    channel.writeAndFlush(loginRequestPacket);
-                    // 等待服务器响应
-                    waitForLoginResponse();
+                    loginConsoleCommand.exec(scanner, channel);
                 } else {
-                    log.info("请输入接收人与发送内容，格式[接收人 发送内容] ");
-                    String toUserId = scanner.next();
-                    String message = scanner.next();
-                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    consoleCommandManager.exec(scanner, channel);
                 }
             }
         }).start();
-    }
-
-    private static void waitForLoginResponse() {
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

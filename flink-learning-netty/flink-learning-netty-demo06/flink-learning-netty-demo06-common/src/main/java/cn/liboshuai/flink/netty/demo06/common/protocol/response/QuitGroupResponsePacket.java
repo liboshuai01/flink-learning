@@ -1,4 +1,4 @@
-package cn.liboshuai.flink.netty.demo06.common.protocol.request;
+package cn.liboshuai.flink.netty.demo06.common.protocol.response;
 
 import cn.liboshuai.flink.netty.demo06.common.protocol.Packet;
 import cn.liboshuai.flink.netty.demo06.common.protocol.command.Command;
@@ -11,22 +11,25 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageRequestPacket extends Packet implements Serializable {
+public class QuitGroupResponsePacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 消息接收方 username
+     * 离开的群组名称
      */
-    private String toUsername;
-
+    private String groupName;
     /**
-     * 发送信息内容
+     * 离开群组结果
      */
-    private String message;
+    private boolean success;
+    /**
+     * 离开群组失败原因
+     */
+    private String reason;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.QUIT_GROUP_RESPONSE;
     }
 }

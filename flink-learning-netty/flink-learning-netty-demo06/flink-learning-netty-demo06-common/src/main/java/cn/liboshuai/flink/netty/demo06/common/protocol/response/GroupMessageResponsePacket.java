@@ -1,7 +1,8 @@
-package cn.liboshuai.flink.netty.demo06.common.protocol.request;
+package cn.liboshuai.flink.netty.demo06.common.protocol.response;
 
 import cn.liboshuai.flink.netty.demo06.common.protocol.Packet;
 import cn.liboshuai.flink.netty.demo06.common.protocol.command.Command;
+import cn.liboshuai.flink.netty.demo06.common.session.Session;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,22 +12,25 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageRequestPacket extends Packet implements Serializable {
+public class GroupMessageResponsePacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 消息接收方 username
+     * 消息来源的群组名称
      */
-    private String toUsername;
-
+    private String fromGroupName;
     /**
-     * 发送信息内容
+     * 消息发送者的 session 信息
+     */
+    private Session fromUser;
+    /**
+     * 群发消息内容
      */
     private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.GROUP_MESSAGE_RESPONSE;
     }
 }

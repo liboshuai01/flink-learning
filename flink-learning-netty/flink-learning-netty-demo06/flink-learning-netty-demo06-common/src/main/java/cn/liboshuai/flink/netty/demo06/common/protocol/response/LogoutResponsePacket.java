@@ -1,4 +1,4 @@
-package cn.liboshuai.flink.netty.demo06.common.protocol.request;
+package cn.liboshuai.flink.netty.demo06.common.protocol.response;
 
 import cn.liboshuai.flink.netty.demo06.common.protocol.Packet;
 import cn.liboshuai.flink.netty.demo06.common.protocol.command.Command;
@@ -11,22 +11,21 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageRequestPacket extends Packet implements Serializable {
+public class LogoutResponsePacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 消息接收方 username
+     * 注销结果
      */
-    private String toUsername;
-
+    private boolean success;
     /**
-     * 发送信息内容
+     * 注销失败原因
      */
-    private String message;
+    private String reason;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.LOGOUT_RESPONSE;
     }
 }

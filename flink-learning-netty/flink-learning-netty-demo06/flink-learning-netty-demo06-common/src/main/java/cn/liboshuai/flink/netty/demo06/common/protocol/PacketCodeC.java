@@ -1,10 +1,8 @@
 package cn.liboshuai.flink.netty.demo06.common.protocol;
 
 import cn.liboshuai.flink.netty.demo06.common.protocol.command.Command;
-import cn.liboshuai.flink.netty.demo06.common.protocol.request.LoginRequestPacket;
-import cn.liboshuai.flink.netty.demo06.common.protocol.request.MessageRequestPacket;
-import cn.liboshuai.flink.netty.demo06.common.protocol.response.LoginResponsePacket;
-import cn.liboshuai.flink.netty.demo06.common.protocol.response.MessageResponsePacket;
+import cn.liboshuai.flink.netty.demo06.common.protocol.request.*;
+import cn.liboshuai.flink.netty.demo06.common.protocol.response.*;
 import cn.liboshuai.flink.netty.demo06.common.serialize.Serializer;
 import cn.liboshuai.flink.netty.demo06.common.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -37,6 +35,20 @@ public class PacketCodeC {
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(Command.GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
+        packetTypeMap.put(Command.GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
+        packetTypeMap.put(Command.HEARTBEAT_REQUEST, HeartbeatRequestPacket.class);
+        packetTypeMap.put(Command.HEARTBEAT_RESPONSE, HeartbeatResponsePacket.class);
 
         // 初始化序列化器映射表
         serializerMap = new HashMap<>();

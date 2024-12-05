@@ -11,22 +11,22 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageRequestPacket extends Packet implements Serializable {
+public class GroupMessageRequestPacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 消息接收方 username
+     * 发送群组名称
      */
-    private String toUsername;
+    private String toGroupName;
 
     /**
-     * 发送信息内容
+     * 群发消息内容
      */
     private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.GROUP_MESSAGE_REQUEST;
     }
 }

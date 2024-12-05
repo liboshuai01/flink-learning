@@ -5,28 +5,29 @@ import cn.liboshuai.flink.netty.demo06.common.protocol.command.Command;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageRequestPacket extends Packet implements Serializable {
+public class CreateGroupRequestPacket extends Packet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 消息接收方 username
+     * 群组名称
      */
-    private String toUsername;
+    private String groupName;
 
     /**
-     * 发送信息内容
+     * 创建群组的用户名集合
      */
-    private String message;
+    private List<String> usernameList;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return Command.CREATE_GROUP_REQUEST;
     }
 }

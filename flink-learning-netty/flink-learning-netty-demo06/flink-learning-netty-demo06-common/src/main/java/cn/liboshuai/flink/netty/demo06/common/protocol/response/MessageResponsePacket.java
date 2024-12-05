@@ -16,10 +16,6 @@ public class MessageResponsePacket extends Packet implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 发送方 userId
-     */
-    private String fromUserId;
-    /**
      * 发送方 username
      */
     private String fromUsername;

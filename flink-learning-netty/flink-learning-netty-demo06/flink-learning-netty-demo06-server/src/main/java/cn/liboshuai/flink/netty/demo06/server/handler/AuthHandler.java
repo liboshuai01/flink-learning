@@ -1,12 +1,17 @@
-package cn.liboshuai.flink.netty.demo06.server.server.handler;
+package cn.liboshuai.flink.netty.demo06.server.handler;
 
 import cn.liboshuai.flink.netty.demo06.server.util.SessionUtils;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@ChannelHandler.Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter {
+
+    public static final AuthHandler INSTANCE = new AuthHandler();
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (SessionUtils.hasLogin(ctx.channel())) {
